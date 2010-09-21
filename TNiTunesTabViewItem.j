@@ -5,6 +5,9 @@
  * Created by Francisco Tolmasky.
  * Copyright 2008, 280 North, Inc.
  *
+ * Modified by Antoine Mercadal for the needs of Archipel Project
+ * Copyright 2010 Antoine Mercadal
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either

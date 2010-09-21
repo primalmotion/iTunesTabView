@@ -5,6 +5,9 @@
  * Created by Francisco Tolmasky.
  * Copyright 2008, 280 North, Inc.
  *
+ * Modified by Antoine Mercadal for the needs of Archipel Project
+ * Copyright 2010 Antoine Mercadal
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -345,12 +348,12 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 
     if (_selectedTabViewItem)
     {
-        _selectedTabViewItem._tabState = CPBackgroundTab;
+        _selectedTabViewItem._tabState = TNBackgroundTab;
         [_labelsView tabView:self didChangeStateOfTabViewItem:_selectedTabViewItem];
     }
     _selectedTabViewItem = aTabViewItem;
 
-    _selectedTabViewItem._tabState = CPSelectedTab;
+    _selectedTabViewItem._tabState = TNSelectedTab;
 
     var _previousContentView = _contentView;
     _contentView = [_selectedTabViewItem view];
@@ -678,7 +681,7 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
 
         [self addSubview:_labelField];
 
-        [self setTabState:CPBackgroundTab];
+        [self setTabState:TNBackgroundTab];
     }
 
     return self;
@@ -702,7 +705,8 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
          [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedRight.png"] size:CGSizeMake(3.0, 18.0)]
      ] isVertical:NO]];
 
-     [self setBackgroundColor:aTabState == CPSelectedTab ? _TNiTunesTabLabelSelectedBackgroundColor :_TNiTunesTabLabelBackgroundColor];
+     [self setBackgroundColor:aTabState == TNSelectedTab ? _TNiTunesTabLabelSelectedBackgroundColor :_TNiTunesTabLabelBackgroundColor];
+     [_labelField setTextColor:aTabState == TNSelectedTab ? [CPColor blackColor] : [CPColor whiteColor]];
 }
 
 - (void)setTabViewItem:(TNiTunesTabViewItem)aTabViewItem
