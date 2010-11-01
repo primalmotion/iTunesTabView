@@ -24,6 +24,11 @@ Simply include the iTunesTabView framework in your Frameworks directory and incl
     @import <iTunesTabView/iTunesTabView.j>
 
 
+## Demo application
+
+You can see a demo application here: [Demo](http://github.com/primalmotion/iTunesTabView-Example/)
+
+
 ## Documentation
 
 To generate the documentation execute the following :
