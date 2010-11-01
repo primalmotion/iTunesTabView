@@ -47,7 +47,7 @@ TNBackgroundTab = 1;
 */
 TNPressedTab    = 2;
 
-/*! 
+/*!
     @ingroup appkit
     @class TNiTunesTabViewItem
 
@@ -56,14 +56,12 @@ TNPressedTab    = 2;
 */
 @implementation TNiTunesTabViewItem : CPObject
 {
-    id          _identifier @accessors(property=identifier);;
-    CPString    _label @accessors(property=label);
-    int         _tabState @accessors(getter=tabState);
-    
-    CPView      _view @accessors(property=view);
-    CPView      _auxiliaryView @accessors(property=auxiliaryView);
-    
-    TNiTunesTabView   _tabView @accessors(property=tabView);;
+    CPString            _label          @accessors(property=label);
+    CPView              _auxiliaryView  @accessors(property=auxiliaryView);
+    CPView              _view           @accessors(property=view);
+    id                  _identifier     @accessors(property=identifier);
+    int                 _tabState       @accessors(getter=tabState);
+    TNiTunesTabView     _tabView        @accessors(property=tabView);
 }
 
 - (id)init
@@ -78,10 +76,10 @@ TNPressedTab    = 2;
 - (id)initWithIdentifier:(id)anIdentifier
 {
     self = [super init];
-    
+
     if (self)
         _identifier = anIdentifier;
-        
+
     return self;
 }
 @end
@@ -98,7 +96,7 @@ var TNiTunesTabViewItemIdentifierKey  = "TNiTunesTabViewItemIdentifierKey",
 - (id)initWithCoder:(CPCoder)aCoder
 {
     self = [super init];
-    
+
     if (self)
     {
         _identifier     = [aCoder decodeObjectForKey:TNiTunesTabViewItemIdentifierKey];
@@ -106,7 +104,7 @@ var TNiTunesTabViewItemIdentifierKey  = "TNiTunesTabViewItemIdentifierKey",
         _view           = [aCoder decodeObjectForKey:TNiTunesTabViewItemViewKey];
         _auxiliaryView  = [aCoder decodeObjectForKey:TNiTunesTabViewItemAuxViewKey];
     }
-    
+
     return self;
 }
 
