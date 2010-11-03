@@ -34,3 +34,8 @@ You can see a demo application here: [Demo](http://github.com/primalmotion/iTune
 To generate the documentation execute the following :
 
     # jake docs
+
+
+## Help / Suggestion
+
+You can reach us at irc://irc.freenode.net/#archipel
