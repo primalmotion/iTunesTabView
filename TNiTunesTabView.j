@@ -26,7 +26,6 @@
 @import <AppKit/AppKit.j>
 
 @import "TNiTunesTabViewItem.j"
-// #include "CoreGraphics/CGGeometry.h"
 
 
 /*
@@ -35,9 +34,7 @@
     @group TNiTunesTabViewType
 */
 TNTopTabsBezelBorder     = 0;
-//CPLeftTabsBezelBorder    = 1;
-//CPBottomTabsBezelBorder  = 2;
-//CPRightTabsBezelBorder   = 3;
+
 /*
     Displays no tabs and has a bezeled border.
     @global
@@ -64,7 +61,8 @@ var TNiTunesTabViewBezelBorderLeftImage       = nil,
     TNiTunesTabViewBezelBorderBackgroundColor = nil;
 
 var LEFT_INSET  = 7.0,
-    RIGHT_INSET = 7.0;
+    RIGHT_INSET = 7.0,
+    TAB_WIDTH   = 95.0;
 
 var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
     TNiTunesTabViewShouldSelectTabViewItemSelector        = 2,
@@ -132,8 +130,8 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 - (void)_createBezelBorder
 {
     var bounds = [self bounds];
-     bounds.size.width += 7.0;
-     bounds.origin.x -= 7.0;
+     bounds.size.width += LEFT_INSET;
+     bounds.origin.x -= RIGHT_INSET;
 
     _labelsView = [[_TNiTunesTabLabelsView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(bounds), 0.0)];
 
@@ -443,7 +441,7 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 
     if (_tabViewType == TNTopTabsBezelBorder)
     {
-        var labelsViewHeight = 33.0;
+        var labelsViewHeight = 33.0,
             auxiliaryViewHeight = _auxiliaryView ? CGRectGetHeight([_auxiliaryView frame]) : 0.0,
             separatorViewHeight = 0.0;
 
@@ -605,10 +603,10 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     [self layoutSubviews];
 }
 
- -(void)tabView:(TNiTunesTabView)aTabView didChangeStateOfTabViewItem:(TNiTunesTabViewItem)aTabViewItem
- {
+- (void)tabView:(TNiTunesTabView)aTabView didChangeStateOfTabViewItem:(TNiTunesTabViewItem)aTabViewItem
+{
     [_tabLabels[[aTabView indexOfTabViewItem:aTabViewItem]] setTabState:[aTabViewItem tabState]];
- }
+}
 
 - (TNiTunesTabViewItem)representedTabViewItemAtPoint:(CGPoint)aPoint
 {
@@ -628,14 +626,19 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
 
 - (void)layoutSubviews
 {
-    var index = 0,
-        count = _tabLabels.length,
-        width = 110.0,
+    var count = _tabLabels.length,
+        width = TAB_WIDTH,
         x = 15;
 
-    for (; index < count; ++index)
+    for (var i = 0; i < count; i++)
     {
-        var label = _tabLabels[index],
+        var label = _tabLabels[i];
+        width = MAX([[label stringValue] sizeWithFont:[label font]].width, width);
+    }
+
+    for (var i = 0; i < count; i++)
+    {
+        var label = _tabLabels[i],
             frame = CGRectMake(x, 15.0, width, 20.0);
 
         [label setFrame:frame];
@@ -662,8 +665,8 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
 /* @ignore */
 @implementation _TNiTunesTabLabel : CPView
 {
-    TNiTunesTabViewItem   _tabViewItem;
-    CPTextField     _labelField;
+    TNiTunesTabViewItem     _tabViewItem;
+    CPTextField             _labelField;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -724,6 +727,16 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
 - (void)update
 {
     [_labelField setStringValue:[_tabViewItem label]];
+}
+
+- (CPString)stringValue
+{
+    return [_labelField stringValue];
+}
+
+- (CPString)font
+{
+    return [_labelField font];
 }
 
 @end
