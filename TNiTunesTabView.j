@@ -129,6 +129,9 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 
 - (void)_createBezelBorder
 {
+    if (_labelsView)
+        return;
+
     var bounds = [self bounds];
      bounds.size.width += LEFT_INSET;
      bounds.origin.x -= RIGHT_INSET;
@@ -139,7 +142,6 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
      [_labelsView setAutoresizingMask:CPViewWidthSizable];
 
      [self addSubview:_labelsView];
-
 }
 
 
@@ -217,7 +219,7 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 {
     var index = [self indexOfTabViewItem:aTabViewItem];
 
-    [_tabViewItems removeObjectIdenticalTo:aTabViewItem];
+    [_tabViewItems removeObject:aTabViewItem];
 
     [_labelsView tabView:self didRemoveTabViewItemAtIndex:index];
 
@@ -553,8 +555,8 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
 /* @ignore */
 @implementation _TNiTunesTabLabelsView : CPView
 {
-    TNiTunesTabView       _tabView @accessors(property=tabView);
-    CPDictionary    _tabLabels;
+    TNiTunesTabView     _tabView @accessors(property=tabView);
+    CPArray             _tabLabels;
 }
 
 + (float)height
@@ -586,7 +588,7 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     [label setTabViewItem:aTabViewItem];
 
     _tabLabels.push(label);
-
+    console.warn("tabView:didAddTabViewItem: -> size of _tabLabels "+ [_tabLabels count])
     [self addSubview:label];
 
     [self layoutSubviews];
@@ -597,7 +599,8 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     var label = _tabLabels[index];
 
     [_tabLabels removeObjectAtIndex:index];
-
+    console.warn("tabView:didRemoveTabViewItemAtIndex: -> size of _tabLabels "+ [_tabLabels count])
+    [label setTabViewItem:nil];
     [label removeFromSuperview];
 
     [self layoutSubviews];
@@ -694,19 +697,21 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
 {
     var bundle = [CPBundle bundleForClass:[self class]];
 
-    _TNiTunesTabLabelBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
-     [
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundLeft.png"] size:CGSizeMake(6.0, 18.0)],
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundCenter.png"] size:CGSizeMake(1.0, 18.0)],
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundRight.png"] size:CGSizeMake(6.0, 18.0)]
-     ] isVertical:NO]];
+    if (!_TNiTunesTabLabelBackgroundColor)
+        _TNiTunesTabLabelBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
+         [
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundLeft.png"] size:CGSizeMake(6.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundCenter.png"] size:CGSizeMake(1.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundRight.png"] size:CGSizeMake(6.0, 18.0)]
+         ] isVertical:NO]];
 
-    _TNiTunesTabLabelSelectedBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
-     [
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedLeft.png"] size:CGSizeMake(3.0, 18.0)],
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedCenter.png"] size:CGSizeMake(1.0, 18.0)],
-         [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedRight.png"] size:CGSizeMake(3.0, 18.0)]
-     ] isVertical:NO]];
+    if (!_TNiTunesTabLabelSelectedBackgroundColor)
+        _TNiTunesTabLabelSelectedBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
+         [
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedLeft.png"] size:CGSizeMake(3.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedCenter.png"] size:CGSizeMake(1.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedRight.png"] size:CGSizeMake(3.0, 18.0)]
+         ] isVertical:NO]];
 
      [self setBackgroundColor:aTabState == TNSelectedTab ? _TNiTunesTabLabelSelectedBackgroundColor :_TNiTunesTabLabelBackgroundColor];
      [_labelField setTextColor:aTabState == TNSelectedTab ? [CPColor blackColor] : [CPColor whiteColor]];
