@@ -588,7 +588,6 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     [label setTabViewItem:aTabViewItem];
 
     _tabLabels.push(label);
-    console.warn("tabView:didAddTabViewItem: -> size of _tabLabels "+ [_tabLabels count])
     [self addSubview:label];
 
     [self layoutSubviews];
@@ -599,7 +598,6 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     var label = _tabLabels[index];
 
     [_tabLabels removeObjectAtIndex:index];
-    console.warn("tabView:didRemoveTabViewItemAtIndex: -> size of _tabLabels "+ [_tabLabels count])
     [label setTabViewItem:nil];
     [label removeFromSuperview];
 
