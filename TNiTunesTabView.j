@@ -553,10 +553,11 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     _TNiTunesTabLabelsViewOutsideMargin   = 15.0;
 
 /* @ignore */
-@implementation _TNiTunesTabLabelsView : CPView
+@implementation _TNiTunesTabLabelsView : CPScrollView
 {
     TNiTunesTabView     _tabView @accessors(property=tabView);
     CPArray             _tabLabels;
+    CPView              _documentView;
 }
 
 + (float)height
@@ -566,16 +567,19 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
 
 - (id)initWithFrame:(CGRect)aFrame
 {
-    self = [super initWithFrame:aFrame];
-
-    if (self)
+    if (self = [super initWithFrame:aFrame])
     {
         _tabLabels = [];
+
         var bundle = [CPBundle bundleForClass:[self class]];
 
         [self setBackgroundColor:[CPColor colorWithPatternImage:[[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabViewLabelBackground.png"]]]]
-
         [self setFrameSize:CGSizeMake(CGRectGetWidth(aFrame), 33.0)];
+
+        _documentView = [[CPView alloc] initWithFrame:CGRectMake(0.0, 0.0, 10, [self contentSize].height)];
+        [self setDocumentView:_documentView];
+        [self setHasHorizontalScroller:NO];
+        [self setHasVerticalScroller:NO];
     }
 
     return self;
@@ -588,7 +592,7 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     [label setTabViewItem:aTabViewItem];
 
     _tabLabels.push(label);
-    [self addSubview:label];
+    [[self documentView] addSubview:label];
 
     [self layoutSubviews];
 }
@@ -637,6 +641,7 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
         width = MAX([[label stringValue] sizeWithFont:[label font]].width, width);
     }
 
+
     for (var i = 0; i < count; i++)
     {
         var label = _tabLabels[i],
@@ -646,6 +651,14 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
         x = CGRectGetMaxX(frame);
         x += 1.0;
     }
+
+    if (_documentView)
+    {
+        var currentFrame = [_documentView frame];
+        currentFrame.size.width = x + 14;
+        [_documentView setFrame:currentFrame];
+    }
+
 }
 
 - (void)setFrameSize:(CGSize)aSize
