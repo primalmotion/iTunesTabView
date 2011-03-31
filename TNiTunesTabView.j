@@ -23,9 +23,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-@import <AppKit/AppKit.j>
+@import <Foundation/Foundation.j>
+
+@import <AppKit/CPColor.j>
+@import <AppKit/CPImage.j>
+@import <AppKit/CPTextField.j>
+@import <AppKit/CPView.j>
 
 @import "TNiTunesTabViewItem.j"
+
 
 
 /*
@@ -81,20 +87,16 @@ var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
 */
 @implementation TNiTunesTabView : CPView
 {
-    CPView          _labelsView;
-    CPView          _backgroundView;
-    CPView          _separatorView;
-
-    CPView          _auxiliaryView;
-    CPView          _contentView;
-
-    CPArray         _tabViewItems;
-    TNiTunesTabViewItem   _selectedTabViewItem;
-
-    TNiTunesTabViewType   _tabViewType;
-
-    id              _delegate;
-    unsigned        _delegateSelectors;
+    CPArray                 _tabViewItems;
+    CPView                  _auxiliaryView;
+    CPView                  _backgroundView;
+    CPView                  _contentView;
+    CPView                  _labelsView;
+    CPView                  _separatorView;
+    id                      _delegate;
+    TNiTunesTabViewItem     _selectedTabViewItem;
+    TNiTunesTabViewType     _tabViewType;
+    unsigned                _delegateSelectors;
 }
 
 /*
