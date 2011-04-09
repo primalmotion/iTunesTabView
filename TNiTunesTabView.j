@@ -713,17 +713,17 @@ var _TNiTunesTabLabelBackgroundColor          = nil,
     if (!_TNiTunesTabLabelBackgroundColor)
         _TNiTunesTabLabelBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
          [
-             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundLeft.png"] size:CGSizeMake(6.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundLeft.png"] size:CGSizeMake(2.0, 18.0)],
              [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundCenter.png"] size:CGSizeMake(1.0, 18.0)],
-             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundRight.png"] size:CGSizeMake(6.0, 18.0)]
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelBackgroundRight.png"] size:CGSizeMake(2.0, 18.0)]
          ] isVertical:NO]];
 
     if (!_TNiTunesTabLabelSelectedBackgroundColor)
         _TNiTunesTabLabelSelectedBackgroundColor = [CPColor colorWithPatternImage:[[CPThreePartImage alloc] initWithImageSlices:
          [
-             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedLeft.png"] size:CGSizeMake(3.0, 18.0)],
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedLeft.png"] size:CGSizeMake(2.0, 18.0)],
              [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedCenter.png"] size:CGSizeMake(1.0, 18.0)],
-             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedRight.png"] size:CGSizeMake(3.0, 18.0)]
+             [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabLabelSelectedRight.png"] size:CGSizeMake(2.0, 18.0)]
          ] isVertical:NO]];
 
      [self setBackgroundColor:aTabState == TNSelectedTab ? _TNiTunesTabLabelSelectedBackgroundColor :_TNiTunesTabLabelBackgroundColor];
