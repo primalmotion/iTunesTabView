@@ -560,6 +560,8 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     TNiTunesTabView     _tabView @accessors(property=tabView);
     CPArray             _tabLabels;
     CPView              _documentView;
+    CPButton            _buttonScrollLeft;
+    CPButton            _buttonScrollRight;
 }
 
 + (float)height
@@ -573,7 +575,11 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
     {
         _tabLabels = [];
 
-        var bundle = [CPBundle bundleForClass:[self class]];
+        var bundle = [CPBundle bundleForClass:[self class]],
+            imageButtonLeft = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"button-left.png"] size:CPSizeMake(14.0, 14.0)],
+            imageButtonLeftPressed = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"button-left-pressed.png"] size:CPSizeMake(14.0, 14.0)],
+            imageButtonRight = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"button-right.png"] size:CPSizeMake(14.0, 14.0)],
+            imageButtonRightPressed = [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"button-right-pressed.png"] size:CPSizeMake(14.0, 14.0)];
 
         [self setBackgroundColor:[CPColor colorWithPatternImage:[[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"TNiTunesTabViewLabelBackground.png"]]]]
         [self setFrameSize:CGSizeMake(CGRectGetWidth(aFrame), 33.0)];
@@ -582,9 +588,49 @@ var _TNiTunesTabLabelsViewBackgroundColor = nil,
         [self setDocumentView:_documentView];
         [self setHasHorizontalScroller:NO];
         [self setHasVerticalScroller:NO];
+        [self setHorizontalLineScroll:50.0];
+
+        _buttonScrollRight = [[CPButton alloc] initWithFrame:CPRectMake(CGRectGetWidth(aFrame) - 21, 0, 14, 15)];
+        [_buttonScrollRight setBordered:NO];
+        [_buttonScrollRight setImage:imageButtonRight]
+        [_buttonScrollRight setValue:imageButtonRight forThemeAttribute:@"image"];
+        [_buttonScrollRight setValue:imageButtonRightPressed forThemeAttribute:@"image" inState:CPThemeStateHighlighted];
+        [_buttonScrollRight setTarget:self];
+        [_buttonScrollRight setAction:@selector(moveRight:)];
+        [_buttonScrollRight setContinuous:YES];
+
+        _buttonScrollLeft = [[CPButton alloc] initWithFrame:CPRectMake(1, 0, 14, 15)];
+        [_buttonScrollLeft setBordered:NO];
+        [_buttonScrollLeft setImage:imageButtonLeft]
+        [_buttonScrollLeft setTarget:self];
+        [_buttonScrollLeft setValue:imageButtonLeft forThemeAttribute:@"image"];
+        [_buttonScrollLeft setValue:imageButtonLeftPressed forThemeAttribute:@"image" inState:CPThemeStateHighlighted];
+        [_buttonScrollLeft setTarget:self];
+        [_buttonScrollLeft setAction:@selector(moveLeft:)];
+        [_buttonScrollLeft setContinuous:YES];
+
+        [self addSubview:_buttonScrollRight];
+        [self addSubview:_buttonScrollLeft];
     }
 
     return self;
+}
+
+- (void)reflectScrolledClipView:(CPClipView)aClipView
+{
+    [super reflectScrolledClipView:aClipView];
+
+    if ([_horizontalScroller isEnabled])
+    {
+        [_buttonScrollLeft setHidden:NO];
+        [_buttonScrollRight setHidden:NO];
+        [_buttonScrollRight setFrame:CPRectMake(CGRectGetWidth([self frame]) - 21, 0, 14, 15)]; // why the CPViewMinXMargin doesn't work here ??
+    }
+    else
+    {
+        [_buttonScrollLeft setHidden:YES];
+        [_buttonScrollRight setHidden:YES];
+    }
 }
 
 - (void)tabView:(TNiTunesTabView)aTabView didAddTabViewItem:(TNiTunesTabViewItem)aTabViewItem
