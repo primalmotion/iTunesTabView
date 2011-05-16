@@ -68,7 +68,7 @@ var TNiTunesTabViewBezelBorderLeftImage       = nil,
 
 var LEFT_INSET  = 7.0,
     RIGHT_INSET = 7.0,
-    TAB_WIDTH   = 95.0;
+    TAB_WIDTH   = 110.0;
 
 var TNiTunesTabViewDidSelectTabViewItemSelector           = 1,
     TNiTunesTabViewShouldSelectTabViewItemSelector        = 2,
